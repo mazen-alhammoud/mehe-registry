@@ -84,6 +84,7 @@ const STREAMS: Stream[] = [
         ],
       },
     ],
+    callout: "Co-validated with Ministry IT team.",
   },
   {
     id: "operational",
@@ -116,13 +117,14 @@ const STREAMS: Stream[] = [
         ],
       },
     ],
+    callout: "Execution coordinated with the Ministry.",
   },
 ];
 
 /* ─── Icons ─── */
 
 function StreamIcon({ type, active }: { type: Stream["icon"]; active: boolean }) {
-  const color = active ? "#2444E2" : "#9ca3af";
+  const color = active ? "#ffffff" : "#9ca3af";
 
   if (type === "academic") {
     return (
@@ -258,9 +260,8 @@ export default function PilotStreams() {
       <div className="max-w-6xl mx-auto px-6 pt-24 pb-20 sm:pt-32 sm:pb-28">
         {/* ─── Header ─── */}
         <div
-          className={`text-center mb-14 sm:mb-16 transition-all duration-700 ease-out ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-center mb-14 sm:mb-16 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           <p
             className="text-xs font-semibold uppercase tracking-[0.2em] mb-4"
@@ -282,9 +283,8 @@ export default function PilotStreams() {
 
         {/* ─── Stream selector tabs ─── */}
         <div
-          className={`grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-12 sm:mb-14 transition-all duration-700 ease-out ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`relative grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-12 sm:mb-14 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
           style={{ transitionDelay: "0.1s" }}
         >
           {STREAMS.map((s, i) => {
@@ -293,47 +293,38 @@ export default function PilotStreams() {
               <button
                 key={s.id}
                 onClick={() => setActiveStream(i)}
-                className={`group relative rounded-xl px-5 py-5 sm:px-6 sm:py-6 text-left transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "bg-white shadow-lg ring-1"
-                    : "bg-gray-50 hover:bg-gray-100/80"
-                }`}
+                className="group relative rounded-xl px-5 py-5 sm:px-6 sm:py-6 text-left transition-all duration-400 cursor-pointer overflow-hidden"
                 style={{
+                  background: isActive
+                    ? "linear-gradient(135deg, #1a33b8 0%, #2444E2 50%, #3b5fe8 100%)"
+                    : "#f4f5f7",
+                  border: "1px solid",
+                  borderColor: isActive ? "rgba(36,68,226,0.3)" : "rgba(0,0,0,0.04)",
                   boxShadow: isActive
-                    ? "0 4px 24px rgba(36,68,226,0.10), 0 1px 4px rgba(0,0,0,0.06)"
-                    : undefined,
-                  border: isActive ? "1px solid rgba(36,68,226,0.2)" : "1px solid rgba(0,0,0,0.04)",
+                    ? "0 8px 32px rgba(36,68,226,0.25), 0 2px 8px rgba(36,68,226,0.15)"
+                    : "none",
+                  opacity: isActive ? 1 : 0.6,
+                  transform: isActive ? "scale(1)" : "scale(0.98)",
                 }}
               >
-                {/* Active indicator bar */}
-                <div
-                  className="absolute top-0 left-6 right-6 h-0.5 rounded-b-full transition-all duration-300"
-                  style={{
-                    backgroundColor: isActive ? "#2444E2" : "transparent",
-                    opacity: isActive ? 1 : 0,
-                  }}
-                />
-
                 <div className="flex items-center gap-3 mb-2">
                   <StreamIcon type={s.icon} active={isActive} />
                   <span
                     className="text-[0.6rem] font-bold uppercase tracking-[0.15em] transition-colors duration-300"
-                    style={{ color: isActive ? "#2444E2" : "#9ca3af" }}
+                    style={{ color: isActive ? "rgba(255,255,255,0.7)" : "#9ca3af" }}
                   >
                     {s.tagline}
                   </span>
                 </div>
                 <p
-                  className={`text-sm sm:text-base font-semibold transition-colors duration-300 ${
-                    isActive ? "text-gray-900" : "text-gray-500"
-                  }`}
+                  className="text-sm sm:text-base font-semibold transition-colors duration-300"
+                  style={{ color: isActive ? "#ffffff" : "#6b7280" }}
                 >
                   {s.label}
                 </p>
                 <p
-                  className={`mt-1 text-xs leading-snug transition-colors duration-300 ${
-                    isActive ? "text-gray-500" : "text-gray-400"
-                  }`}
+                  className="mt-1 text-xs leading-snug transition-colors duration-300"
+                  style={{ color: isActive ? "rgba(255,255,255,0.6)" : "#9ca3af" }}
                 >
                   {s.framing}
                 </p>

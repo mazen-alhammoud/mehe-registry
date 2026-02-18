@@ -13,9 +13,8 @@ import NationalFramework from "./NationalFramework";
 import EveryStageIs from "./EveryStageIs";
 import PilotDeliverables from "./PilotDeliverables";
 import PilotOverview from "./PilotOverview";
-import InstitutionalControl from "./InstitutionalControl";
-import MeetTheTeam from "./MeetTheTeam";
 import ClosingCTA from "./ClosingCTA";
+import WhoWeAre from "./WhoWeAre";
 
 /* ─── Data ─── */
 
@@ -32,58 +31,6 @@ const CAPABILITIES = [
   { label: "Performance", svg: performanceSvgUrl },
   { label: "Profiles", svg: profileSvgUrl },
 ];
-
-/* ─── Animated counter ─── */
-
-function CountUp({
-  end,
-  suffix = "",
-  duration = 2000,
-}: {
-  end: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState("0");
-  const hasRun = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasRun.current) {
-          hasRun.current = true;
-          observer.disconnect();
-
-          const start = performance.now();
-          const step = (now: number) => {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            // ease-out cubic
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const current = Math.round(eased * end);
-            setDisplay(current.toLocaleString());
-            if (progress < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [end, duration]);
-
-  return (
-    <span ref={ref}>
-      {display}
-      {suffix}
-    </span>
-  );
-}
 
 /* ─── Check icon (inline SVG) ─── */
 
@@ -109,12 +56,11 @@ function CheckIcon() {
 
 const NAV_SECTIONS = [
   { id: "nav-overview", label: "Overview" },
-  { id: "nav-challenge", label: "Challenge" },
+  { id: "nav-team", label: "Team" },
+  { id: "nav-challenge", label: "Our Understanding" },
   { id: "nav-pilot", label: "Pilot" },
   { id: "nav-framework", label: "Framework" },
   { id: "nav-deliverables", label: "Deliverables" },
-  { id: "nav-infrastructure", label: "Why ELMY" },
-  { id: "nav-team", label: "Team" },
 ];
 
 /* ─── Nav bar ─── */
@@ -223,8 +169,26 @@ export default function HeroExamsClickup() {
 
   const heroWrapperRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => setMounted(true), []);
+
+  /* ─── Scroll-triggered entrance animations ─── */
+  useEffect(() => {
+    const el = heroSectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('in-view');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (paused) return;
@@ -249,13 +213,11 @@ export default function HeroExamsClickup() {
       ? Math.max(0, Math.min(1, (scrolled - parallaxStart) / spacerH))
       : 0;
 
-    const scale = 1 - progress * 0.05;
-    const opacity = 1 - progress * 0.4;
-    const blur = progress * 3;
+    const scale = 1 - progress * 0.02;
 
     content.style.transform = `scale(${scale})`;
-    content.style.opacity = String(opacity);
-    content.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
+    content.style.opacity = '1';
+    content.style.filter = 'none';
   }, []);
 
   useEffect(() => {
@@ -276,7 +238,7 @@ export default function HeroExamsClickup() {
             ref={heroContentRef}
             className="will-change-transform origin-top min-h-screen"
           >
-            <section className="pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24 overflow-hidden">
+            <section ref={heroSectionRef} className="pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24 overflow-hidden">
               <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-start">
                   {/* ─── Left column: copy ─── */}
@@ -285,7 +247,7 @@ export default function HeroExamsClickup() {
                       className="text-xs font-semibold uppercase tracking-[0.15em] mb-4 animate-fade-up"
                       style={{ color: '#2444E2', animationDelay: '0s' }}
                     >
-                      Part of the National Campaign to Support Public Schools
+                      Part of the National Campaign of the Ministry of Education
                     </p>
 
                     <h1
@@ -445,53 +407,10 @@ export default function HeroExamsClickup() {
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 2 — Credibility strip  (z-2)
+          CARD 2 — Who We Are + Stats + Team  (z-2)
           ═══════════════════════════════════════════ */}
-      <div className="relative" style={{ zIndex: 2 }}>
-        <section
-          className="py-16 sm:py-20"
-          style={{ background: '#f7f7f8' }}
-        >
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6 text-center">
-              <div>
-                <span
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight tabular-nums"
-                  style={{ color: '#2444E2' }}
-                >
-                  <CountUp end={1400} suffix="+" />
-                </span>
-                <span className="mt-2 block text-sm sm:text-base text-gray-500 font-medium">
-                  Test Takers Assessed
-                </span>
-              </div>
-              <div className="relative">
-                <div className="hidden sm:block absolute inset-y-0 left-0 w-px bg-gray-200" />
-                <div className="hidden sm:block absolute inset-y-0 right-0 w-px bg-gray-200" />
-                <span
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight tabular-nums"
-                  style={{ color: '#2444E2' }}
-                >
-                  <CountUp end={1500} />
-                </span>
-                <span className="mt-2 block text-sm sm:text-base text-gray-500 font-medium">
-                  Question Bank Items
-                </span>
-              </div>
-              <div>
-                <span
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight tabular-nums"
-                  style={{ color: '#2444E2' }}
-                >
-                  <CountUp end={5000} suffix="+" />
-                </span>
-                <span className="mt-2 block text-sm sm:text-base text-gray-500 font-medium">
-                  Active Users on LMS
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+      <div id="nav-team" className="relative" style={{ zIndex: 2 }}>
+        <WhoWeAre />
       </div>
 
       {/* ═══════════════════════════════════════════
@@ -544,23 +463,9 @@ export default function HeroExamsClickup() {
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 10 — Institutional Control  (z-10)
+          CARD 10 — Closing CTA  (z-10)
           ═══════════════════════════════════════════ */}
-      <div id="nav-infrastructure" className="relative" style={{ zIndex: 10 }}>
-        <InstitutionalControl />
-      </div>
-
-      {/* ═══════════════════════════════════════════
-          CARD 11 — Meet the Team  (z-11)
-          ═══════════════════════════════════════════ */}
-      <div id="nav-team" className="relative" style={{ zIndex: 11 }}>
-        <MeetTheTeam />
-      </div>
-
-      {/* ═══════════════════════════════════════════
-          CARD 12 — Closing CTA  (z-12)
-          ═══════════════════════════════════════════ */}
-      <div className="relative" style={{ zIndex: 12 }}>
+      <div className="relative" style={{ zIndex: 10 }}>
         <ClosingCTA />
       </div>
     </>

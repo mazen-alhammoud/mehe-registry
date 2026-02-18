@@ -83,12 +83,9 @@ function StepCard({
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
+        setVisible(entry.isIntersecting);
       },
-      { threshold: 0.15 }
+      { threshold: 0.9 }
     );
     obs.observe(el);
     return () => obs.disconnect();

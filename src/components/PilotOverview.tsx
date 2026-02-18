@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import whitelabelSvgUrl from "../assets/Whitelabel.svg";
+import meheLogoUrl from "../assets/mehe.png";
 import elmyLogoUrl from "../assets/elmy.png";
 
 /* ─── Bullet data ─── */
@@ -180,12 +180,110 @@ export default function PilotOverview() {
                   />
                 </div>
 
-                {/* Screenshot */}
-                <img
-                  src={whitelabelSvgUrl}
-                  alt="MEHE white-labeled examination platform"
-                  className="w-full h-auto block"
-                />
+                {/* Two-sided auth screen */}
+                <div className="flex" style={{ minHeight: 340 }}>
+                  {/* Left panel — MEHE branding */}
+                  <div
+                    className="flex flex-col items-center justify-center px-6 py-10 text-center"
+                    style={{
+                      width: "42%",
+                      background: "linear-gradient(160deg, #f9f6f2 0%, #faf8f5 50%, #f5f0eb 100%)",
+                      borderRight: "1px solid rgba(0,0,0,0.06)",
+                    }}
+                  >
+                    <img
+                      src={meheLogoUrl}
+                      alt="MEHE"
+                      className="w-24 h-auto mb-4"
+                    />
+                    <p className="text-[0.6rem] font-semibold leading-snug mb-0.5" style={{ color: "#1a1a1a" }}>
+                      الجمهورية اللبنانية
+                    </p>
+                    <p className="text-[0.55rem] font-bold leading-snug mb-2" style={{ color: "#C1272D" }}>
+                      وزارة التربية والتعليم العالي
+                    </p>
+
+                    <div className="w-10 h-px my-3" style={{ background: "linear-gradient(90deg, transparent, #C1272D, transparent)" }} />
+
+                    <p className="text-[0.5rem] leading-relaxed max-w-[140px]" style={{ color: "#666" }}>
+                      Official National Examination Platform
+                    </p>
+
+                    {/* Decorative accent bar */}
+                    <div className="flex items-center gap-1 mt-4">
+                      <div className="w-6 h-0.5 rounded-full" style={{ background: "#009245" }} />
+                      <div className="w-3 h-0.5 rounded-full" style={{ background: "#C1272D" }} />
+                      <div className="w-6 h-0.5 rounded-full" style={{ background: "#009245" }} />
+                    </div>
+                  </div>
+
+                  {/* Right panel — Login form */}
+                  <div
+                    className="flex-1 flex flex-col items-center justify-center px-6 py-8"
+                    style={{ background: "#ffffff" }}
+                  >
+                    <p className="text-sm font-bold mb-1" style={{ color: "#1a1a1a" }}>
+                      Sign In
+                    </p>
+                    <p className="text-[0.6rem] text-gray-400 mb-5">
+                      Enter your credentials to continue
+                    </p>
+
+                    {/* Student ID field */}
+                    <div className="w-full max-w-[200px] mb-3">
+                      <label className="block text-[0.55rem] font-semibold mb-1 uppercase tracking-wider" style={{ color: "#888" }}>
+                        Student ID
+                      </label>
+                      <div
+                        className="w-full rounded-md px-3 py-2 text-[0.65rem] text-gray-400"
+                        style={{
+                          background: "#fafafa",
+                          border: "1px solid #e5e5e5",
+                        }}
+                      >
+                        LB-2025-XXXXX
+                      </div>
+                    </div>
+
+                    {/* Access Code field */}
+                    <div className="w-full max-w-[200px] mb-5">
+                      <label className="block text-[0.55rem] font-semibold mb-1 uppercase tracking-wider" style={{ color: "#888" }}>
+                        Access Code
+                      </label>
+                      <div
+                        className="w-full rounded-md px-3 py-2 text-[0.65rem] text-gray-400"
+                        style={{
+                          background: "#fafafa",
+                          border: "1px solid #e5e5e5",
+                        }}
+                      >
+                        ••••••••
+                      </div>
+                    </div>
+
+                    {/* Sign in button */}
+                    <div
+                      className="w-full max-w-[200px] rounded-md py-2 text-center text-[0.65rem] font-semibold text-white"
+                      style={{
+                        background: "linear-gradient(135deg, #C1272D, #a01f25)",
+                        boxShadow: "0 2px 8px rgba(193,39,45,0.3)",
+                      }}
+                    >
+                      Access Examination
+                    </div>
+
+                    {/* Footer note */}
+                    <div className="flex items-center gap-1 mt-5">
+                      <svg className="w-2.5 h-2.5" style={{ color: "#009245" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                      </svg>
+                      <span className="text-[0.5rem] text-gray-400">
+                        Secured & monitored session
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Powered by footer */}
                 <div

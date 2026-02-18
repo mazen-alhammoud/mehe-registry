@@ -14,7 +14,7 @@ body {
 /* ─── Entrance animations ─── */
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -29,11 +29,22 @@ body {
 }
 
 .animate-fade-up {
-  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 0;
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both paused;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease both;
+  opacity: 0;
+  animation: fade-in 0.4s ease both paused;
+}
+
+/* Play animations only when parent has .in-view */
+.in-view .animate-fade-up {
+  animation-play-state: running;
+}
+
+.in-view .animate-fade-in {
+  animation-play-state: running;
 }
 
 .animate-slide-in-right {
