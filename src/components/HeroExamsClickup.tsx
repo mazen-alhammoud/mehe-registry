@@ -6,9 +6,9 @@ import performanceSvgUrl from "../assets/Performance.svg";
 import profileSvgUrl from "../assets/Profile.svg";
 import meheLogoUrl from "../assets/mehe.png";
 import elmyLogoUrl from "../assets/elmy.png";
-import StructuralPressures from "./StructuralPressures";
 import PilotStreams from "./PilotStreams";
 import UncompromisingStandards from "./UncompromisingStandards";
+import GovernanceDivision from "./GovernanceDivision";
 import NationalFramework from "./NationalFramework";
 import EveryStageIs from "./EveryStageIs";
 import PilotDeliverables from "./PilotDeliverables";
@@ -19,9 +19,10 @@ import WhoWeAre from "./WhoWeAre";
 /* ─── Data ─── */
 
 const BULLETS = [
-  "Secure delivery of official examinations.",
-  "Standardized workflows across examination centers.",
-  "Reduced administrative burden for schools and the Ministry.",
+  "Centralized governance under Ministry oversight.",
+  "Controlled identity and execution architecture.",
+  "Synchronized national participation.",
+  "Immediate, unbiased digital scoring.",
 ];
 
 const CAPABILITIES = [
@@ -56,11 +57,13 @@ function CheckIcon() {
 
 const NAV_SECTIONS = [
   { id: "nav-overview", label: "Overview" },
-  { id: "nav-team", label: "Team" },
-  { id: "nav-challenge", label: "Our Understanding" },
-  { id: "nav-pilot", label: "Pilot" },
-  { id: "nav-framework", label: "Framework" },
-  { id: "nav-deliverables", label: "Deliverables" },
+  { id: "nav-team", label: "Who We Are" },
+  { id: "nav-governance", label: "Framework & Governance" },
+  { id: "nav-architecture", label: "Academic & Platform" },
+  { id: "nav-preparation", label: "Preparation" },
+  { id: "nav-competition", label: "Competition Day" },
+  { id: "nav-grading", label: "Grading & Intelligence" },
+  { id: "nav-reporting", label: "Reporting & Value" },
 ];
 
 /* ─── Nav bar ─── */
@@ -73,16 +76,21 @@ function NavBar() {
     const onScroll = () => {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       if (docH <= 0) { setScrollPct(0); return; }
-      setScrollPct(Math.min(100, Math.round((window.scrollY / docH) * 100)));
+      const pct = Math.min(100, Math.round((window.scrollY / docH) * 100));
+      setScrollPct(pct);
 
-      /* Scroll-spy: find the section closest to the top of the viewport */
-      const offset = 120;
+      /* Scroll-spy: pick the last section whose top is above 40% of viewport */
+      const threshold = window.innerHeight * 0.4;
       let current = NAV_SECTIONS[0].id;
       for (const sec of NAV_SECTIONS) {
         const el = document.getElementById(sec.id);
-        if (el && el.getBoundingClientRect().top <= offset) {
+        if (el && el.getBoundingClientRect().top <= threshold) {
           current = sec.id;
         }
+      }
+      /* At bottom of page, activate last nav section */
+      if (pct >= 95) {
+        current = NAV_SECTIONS[NAV_SECTIONS.length - 1].id;
       }
       setActiveId(current);
     };
@@ -94,13 +102,11 @@ function NavBar() {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="text-xl font-bold text-gray-900 tracking-tight">
-          Elmy
-        </span>
+        <img src={elmyLogoUrl} alt="Elmy" className="h-8 w-auto" />
 
         {/* ─── Section links (hidden on mobile) ─── */}
-        <div className="hidden md:flex items-center gap-1">
-          {NAV_SECTIONS.map((sec) => {
+        <div className="hidden lg:flex items-center gap-0.5">
+          {NAV_SECTIONS.map((sec, i) => {
             const isActive = activeId === sec.id;
             return (
               <a
@@ -110,12 +116,21 @@ function NavBar() {
                   e.preventDefault();
                   document.getElementById(sec.id)?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="relative px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200"
+                className="relative flex items-center gap-1.5 px-2.5 py-1.5 text-[0.65rem] font-medium rounded-full transition-all duration-200"
                 style={{
-                  color: isActive ? "#2444E2" : "#6b7280",
+                  color: isActive ? "#2444E2" : "#9ca3af",
                   background: isActive ? "rgba(36, 68, 226, 0.08)" : "transparent",
                 }}
               >
+                <span
+                  className="w-4 h-4 rounded-full flex items-center justify-center text-[0.5rem] font-bold flex-shrink-0"
+                  style={{
+                    background: isActive ? "#2444E2" : "rgba(0,0,0,0.05)",
+                    color: isActive ? "#fff" : "#9ca3af",
+                  }}
+                >
+                  {i + 1}
+                </span>
                 {sec.label}
               </a>
             );
@@ -130,18 +145,6 @@ function NavBar() {
           >
             {scrollPct}%
           </span>
-          <a
-            href="#login"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Login
-          </a>
-          <a
-            href="#signup"
-            className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-          >
-            Sign Up
-          </a>
         </div>
       </div>
 
@@ -247,30 +250,29 @@ export default function HeroExamsClickup() {
                       className="text-xs font-semibold uppercase tracking-[0.15em] mb-4 animate-fade-up"
                       style={{ color: '#2444E2', animationDelay: '0s' }}
                     >
-                      Part of the National Campaign of the Ministry of Education
+                      Ministry of Education and Higher Education
                     </p>
 
                     <h1
                       className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-gray-900 mb-5 animate-fade-up"
                       style={{ animationDelay: '0.05s', lineHeight: '1.2' }}
                     >
-                      A Secure & Trusted{' '}
+                      The National Digital{' '}
                       <span
                         className="bg-clip-text text-transparent animate-gradient-text"
                         style={{
                           backgroundImage: 'linear-gradient(90deg, #1a33b8, #2444E2, #6b8cff, #2444E2, #1a33b8)',
                         }}
                       >
-                        Digital Foundation
-                      </span>{' '}
-                      for Official School Exams in Lebanon
+                        Competition Day
+                      </span>
                     </h1>
 
                     <p
                       className="text-base text-gray-500 leading-[1.75] mb-7 animate-fade-up"
                       style={{ animationDelay: '0.15s' }}
                     >
-                      A Ministry-aligned national pilot designed to safeguard fairness, transparency, and credibility at scale.
+                      A Ministry-Led structured and observable national competition designed to validate performance under standardized, secure digital conditions.
                     </p>
 
                     <ul className="space-y-3 mb-8">
@@ -288,20 +290,6 @@ export default function HeroExamsClickup() {
                       ))}
                     </ul>
 
-                    <a
-                      href="#request-access"
-                      className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 animate-fade-up"
-                      style={{ backgroundColor: '#2444E2', '--tw-ring-color': '#2444E2', animationDelay: '0.5s' } as React.CSSProperties}
-                    >
-                      Request Institutional Access
-                    </a>
-
-                    <p
-                      className="mt-3 text-xs text-gray-400 tracking-wide animate-fade-in"
-                      style={{ animationDelay: '0.65s' }}
-                    >
-                      Pilot-ready. Ministry-aligned. Built for reliability.
-                    </p>
 
                     <div
                       className="mt-10 pt-8 border-t border-gray-100 animate-fade-in"
@@ -414,30 +402,30 @@ export default function HeroExamsClickup() {
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 3 — Structural Pressures  (z-3)
+          CARD 3 — Framework & Governance  (z-3)
           ═══════════════════════════════════════════ */}
-      <div id="nav-challenge" className="relative" style={{ zIndex: 3 }}>
-        <StructuralPressures />
-      </div>
-
-      {/* ═══════════════════════════════════════════
-          CARD 4 — Pilot Streams  (z-4)
-          ═══════════════════════════════════════════ */}
-      <div id="nav-pilot" className="relative" style={{ zIndex: 4 }}>
+      <div id="nav-governance" className="relative" style={{ zIndex: 3 }}>
         <PilotStreams />
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 5 — Uncompromising Standards  (z-5)
+          CARD 4 — Academic & Platform  (z-4)
           ═══════════════════════════════════════════ */}
-      <div className="relative" style={{ zIndex: 5 }}>
+      <div id="nav-architecture" className="relative" style={{ zIndex: 4 }}>
         <UncompromisingStandards />
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 6 — National Framework  (z-6)
+          CARD 5 — Preparation  (z-5)
           ═══════════════════════════════════════════ */}
-      <div id="nav-framework" className="relative" style={{ zIndex: 6 }}>
+      <div id="nav-preparation" className="relative" style={{ zIndex: 5 }}>
+        <GovernanceDivision />
+      </div>
+
+      {/* ═══════════════════════════════════════════
+          CARD 6 — Competition Day & Oversight  (z-6)
+          ═══════════════════════════════════════════ */}
+      <div id="nav-competition" className="relative" style={{ zIndex: 6 }}>
         <NationalFramework />
       </div>
 
@@ -449,16 +437,16 @@ export default function HeroExamsClickup() {
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 8 — Pilot Overview  (z-8)
+          CARD 8 — Grading & Intelligence  (z-8)
           ═══════════════════════════════════════════ */}
-      <div className="relative" style={{ zIndex: 8 }}>
+      <div id="nav-grading" className="relative" style={{ zIndex: 8 }}>
         <PilotOverview />
       </div>
 
       {/* ═══════════════════════════════════════════
-          CARD 9 — Pilot Deliverables  (z-9)
+          CARD 9 — Reporting & Value  (z-9)
           ═══════════════════════════════════════════ */}
-      <div id="nav-deliverables" className="relative" style={{ zIndex: 9 }}>
+      <div id="nav-reporting" className="relative" style={{ zIndex: 9 }}>
         <PilotDeliverables />
       </div>
 

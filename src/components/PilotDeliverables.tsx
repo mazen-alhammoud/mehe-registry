@@ -85,11 +85,11 @@ const CARDS = [
 const CARD_W = 320;
 const GAP = 20;
 
-/* ─── Expanding closing callout ─── */
+/* ─── Closing callout ─── */
 
 function ClosingCallout() {
   const ref = useRef<HTMLDivElement>(null);
-  const [expanded, setExpanded] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -97,11 +97,11 @@ function ClosingCallout() {
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setExpanded(true);
+          setVisible(true);
           obs.disconnect();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -109,104 +109,39 @@ function ClosingCallout() {
 
   return (
     <div ref={ref} className="max-w-5xl mx-auto px-6 py-20 sm:py-28 flex justify-center">
-      <div
-        className="overflow-hidden text-center transition-all ease-out"
-        style={{
-          width: expanded ? "100%" : "220px",
-          maxWidth: "100%",
-          padding: expanded ? "3rem 2.5rem" : "0.75rem 1.5rem",
-          borderRadius: expanded ? "1rem" : "9999px",
-          background: expanded
-            ? "linear-gradient(135deg, rgba(30,41,59,0.04) 0%, rgba(30,41,59,0.08) 100%)"
-            : "rgba(30,41,59,0.06)",
-          border: expanded
-            ? "1px solid rgba(30,41,59,0.12)"
-            : "1px solid rgba(30,41,59,0.15)",
-          transitionDuration: "0.8s",
-          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-      >
-        {/* Label — always visible */}
+      <div className="text-center space-y-2">
         <p
-          className="text-xs font-semibold uppercase tracking-[0.15em] transition-all ease-out"
+          className="text-base sm:text-lg font-bold transition-all duration-700"
           style={{
-            color: "#475569",
-            marginBottom: expanded ? "1rem" : "0",
-            transitionDuration: "0.6s",
+            color: "#0f172a",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
           }}
         >
-          Beyond Results
+          Measurement precedes expansion.
         </p>
-
-        {/* Expanding content */}
-        <div
-          className="transition-all ease-out overflow-hidden flex flex-col items-center"
+        <p
+          className="text-base sm:text-lg font-bold transition-all duration-700"
           style={{
-            maxHeight: expanded ? "320px" : "0px",
-            opacity: expanded ? 1 : 0,
-            transform: expanded ? "translateY(0)" : "translateY(8px)",
-            transitionDuration: "0.7s",
-            transitionDelay: expanded ? "0.25s" : "0s",
+            color: "#0f172a",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transitionDelay: "0.1s",
           }}
         >
-          <p
-            className="text-xl sm:text-2xl font-bold leading-snug max-w-xl mb-6"
-            style={{ color: "#0f172a" }}
-          >
-            The Ministry receives more than results.
-          </p>
-
-          {/* Icon row */}
-          <div className="grid grid-cols-3 w-full max-w-sm">
-            {/* Visibility */}
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ background: "#f1f3f9", color: "#475569" }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </div>
-              <span className="text-xs font-semibold" style={{ color: "#334155" }}>
-                Visibility
-              </span>
-            </div>
-
-            {/* Operational Control */}
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ background: "#f1f3f9", color: "#475569" }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <circle cx="12" cy="12" r="3" />
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                </svg>
-              </div>
-              <span className="text-xs font-semibold" style={{ color: "#334155" }}>
-                Operational Control
-              </span>
-            </div>
-
-            {/* Validated Path Forward */}
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ background: "#f1f3f9", color: "#475569" }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-              </div>
-              <span className="text-xs font-semibold" style={{ color: "#334155" }}>
-                Validated Path Forward
-              </span>
-            </div>
-          </div>
-        </div>
+          Credibility precedes scale.
+        </p>
+        <p
+          className="text-base sm:text-lg font-bold transition-all duration-700"
+          style={{
+            color: "#0f172a",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transitionDelay: "0.2s",
+          }}
+        >
+          Transparency precedes transformation.
+        </p>
       </div>
     </div>
   );
